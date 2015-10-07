@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/spinner_item_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/car"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textColor="#ffffffff"
+        android:textSize="18dp"
+        android:text="driving"
+        android:textStyle="bold"
+        android:paddingBottom="4dp"
+        android:layout_alignParentTop="false"
+        android:layout_toRightOf="@+id/spinner_item_icon"
+        android:layout_centerVertical="true" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/spinner_triangle"
+        android:scaleType="fitCenter"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@android:id/text1"
+        android:layout_toEndOf="@android:id/text1" />
+</RelativeLayout>

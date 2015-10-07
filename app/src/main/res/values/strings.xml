@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">LocationTrackingExample</string>
+
+    <!--main activity    -->
+    <string name="accuracy_label">Accuracy:</string>
+    <string name="altitude_label">Altitude:</string>
+    <string name="longitude_label">Longitude:</string>
+    <string name="latitude_label">Latitude:</string>
+    <string name="distance">Distance: </string>
+    <string name="duration">Duration: </string>
+
+    <!--menu-->
+    <string name="action_clear_map">Clear map</string>
+    <string name="action_clear_geofences">Clear geofences</string>
+    <string name="action_clear_route">Clear route</string>
+    <string name="action_start_updates">Start updates</string>
+    <string name="action_stop_updates">Stop updates</string>
+    <string name="action_route">Make route</string>
+
+    <!--geofense error-->
+    <string name="geofence_not_available">geofence not available</string>
+    <string name="geofence_too_many_geofences">geofence too many geofences</string>
+    <string name="geofence_too_many_pending_intents">geofence too many pending intents</string>
+    <string name="unknown_geofence_error">unknown geofence error</string>
+
+    <!--route modes-->
+    <string-array name="route_mode_name">
+        <item>driving</item>
+        <item>walking</item>
+        <item>distance</item>
+    </string-array>
+
+</resources>
