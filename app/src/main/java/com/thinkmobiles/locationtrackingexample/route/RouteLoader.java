@@ -4,12 +4,13 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.PolyUtil;
 import com.thinkmobiles.locationtrackingexample.route.models.RouteInfo;
-import com.thinkmobiles.locationtrackingexample.route.restapi.RestClient;
 import com.thinkmobiles.locationtrackingexample.route.models.RouteResponse;
+import com.thinkmobiles.locationtrackingexample.route.restapi.RestClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 public class RouteLoader extends AsyncTaskLoader<RouteInfo> {
 
+    public  static final int ID = 10000;
     private static final String LOCATION_PARAMS_KEY = "LOCATION_PARAMS_KEY";
     private static final String START_LOCATION_KEY = "START_LOCATION_KEY";
     private static final String TARGET_LOCATION_KEY = "TARGET_LOCATION_KEY";
@@ -47,6 +49,7 @@ public class RouteLoader extends AsyncTaskLoader<RouteInfo> {
 
     @Override
     public RouteInfo loadInBackground() {
+        Log.d("LOADER", "loadInBackground");
         Location startLocation = mParams.get(START_LOCATION_KEY);
         Location targetLocation = mParams.get(TARGET_LOCATION_KEY);
 
@@ -61,8 +64,8 @@ public class RouteLoader extends AsyncTaskLoader<RouteInfo> {
     private RouteInfo getDistance(Location start, Location target) {
         List<LatLng> list = new ArrayList<>();
 
-        list.add(new LatLng(start.getLatitude(),start.getLongitude()));
-        list.add(new LatLng(target.getLatitude(),target.getLongitude()));
+        list.add(new LatLng(start.getLatitude(), start.getLongitude()));
+        list.add(new LatLng(target.getLatitude(), target.getLongitude()));
 
         float dist = (int) start.distanceTo(target);
         String distance;
@@ -80,15 +83,19 @@ public class RouteLoader extends AsyncTaskLoader<RouteInfo> {
 
         LatLng startLatLng = new LatLng(start.getLatitude(), start.getLongitude());
         LatLng targetLatLng = new LatLng(target.getLatitude(), target.getLongitude());
+        try {
+            RouteResponse response = RestClient.getInstance().getRoute(startLatLng, targetLatLng, mode);
+            if (response.status.equals("OK")) {
+                return new RouteInfo.Builder()
+                        .setPoints(PolyUtil.decode(response.getPoints()))
+                        .setDuration(response.getDuration())
+                        .setDistance(response.getDistance())
+                        .build();
+            }
 
-        RouteResponse response = RestClient.getInstance().getRoute(startLatLng, targetLatLng, mode);
-
-        if (response.status.equals("OK")) {
-            return new RouteInfo.Builder()
-                    .setPoints(PolyUtil.decode(response.getPoints()))
-                    .setDuration(response.getDuration())
-                    .setDistance(response.getDistance())
-                    .build();
+        } catch (Exception e) {
+            Log.e("RouteLoader", "Error executing...", e);
+            return null;
         }
 
         return null;

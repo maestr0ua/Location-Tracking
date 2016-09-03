@@ -31,4 +31,6 @@
     <string name="walking">Walking</string>
     <string name="distance">Distance</string>
 
+    <string name="help_tap">Tap on screen - set target location</string>
+    <string name="help_long_tap">Long tap on screen - add geofence on map</string>
 </resources>

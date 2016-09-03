@@ -24,7 +24,7 @@ public final class MapController {
 
     private GoogleMap mMap;
     private List<Circle> mCircleList = new ArrayList();
-    private Marker mStartMarker, mEndMarker;
+    private Marker mStartMarker, mTargetMarker;
     private Polyline mRoutePolyline;
 
     public MapController(final GoogleMap _map) {
@@ -49,14 +49,14 @@ public final class MapController {
         mCircleList.add(circle);
     }
 
-    private MarkerOptions prepareMarker(Location location, boolean isMyLocation) {
+    private MarkerOptions prepareMarker(Location location, boolean isStartLocation) {
         final LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         MarkerOptions marker = new MarkerOptions().position(myLocation);
         marker.title("Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude());
         marker.snippet("Altitude: " + String.format("%.2f", location.getAltitude()) + ", Accuracy: " + location.getAccuracy());
 
-        if (isMyLocation)
+        if (isStartLocation)
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
         return marker;
     }
@@ -71,15 +71,16 @@ public final class MapController {
         mMap.animateCamera(cameraUpdate);
     }
 
-    public final void drawEndMarker(LatLng latLng) {
-        if (mEndMarker == null) {
+    public final void drawTargetMarker(LatLng latLng) {
+        if (mTargetMarker == null) {
             Location location = new Location("TargetLocation");
             location.setLatitude(latLng.latitude);
             location.setLongitude(latLng.longitude);
-            mEndMarker = mMap.addMarker(prepareMarker(location, false));
+            mTargetMarker = mMap.addMarker(prepareMarker(location, false));
         } else {
-            mEndMarker.setPosition(latLng);
+            mTargetMarker.setPosition(latLng);
         }
+
     }
 
     public final void drawStartMarker(Location location) {
@@ -97,26 +98,6 @@ public final class MapController {
                     ", Accuracy: " + location.getAccuracy());
         }
         moveCamera(location);
-    }
-
-    public final Location getStartPosition() {
-        if (mStartMarker == null)
-            return null;
-
-        Location location = new Location("");
-        location.setLatitude(mStartMarker.getPosition().latitude);
-        location.setLongitude(mStartMarker.getPosition().longitude);
-        return location;
-    }
-
-    public final Location getEndPosition() {
-        if (mEndMarker == null)
-            return null;
-
-        Location location = new Location("");
-        location.setLatitude(mEndMarker.getPosition().latitude);
-        location.setLongitude(mEndMarker.getPosition().longitude);
-        return location;
     }
 
     public final void showRoute(List<LatLng> _points) {
@@ -138,14 +119,42 @@ public final class MapController {
     }
 
     public final void deleteRoute() {
-        if (mEndMarker != null)
-            mEndMarker.remove();
-        mEndMarker = null;
+        if (mTargetMarker != null)
+            mTargetMarker.remove();
+        mTargetMarker = null;
 
         if (mRoutePolyline != null) {
             mRoutePolyline.remove();
             mRoutePolyline = null;
         }
+    }
+
+    public final Location getStart() {
+        if (mStartMarker == null)
+            return null;
+
+        Location location = new Location("");
+        location.setLatitude(mStartMarker.getPosition().latitude);
+        location.setLongitude(mStartMarker.getPosition().longitude);
+        return location;
+    }
+
+    public final Location getTarget() {
+        if (mTargetMarker == null)
+            return null;
+
+        Location location = new Location("");
+        location.setLatitude(mTargetMarker.getPosition().latitude);
+        location.setLongitude(mTargetMarker.getPosition().longitude);
+        return location;
+    }
+
+    public boolean hasTarget() {
+        return getTarget() != null;
+    }
+
+    public boolean hasStart() {
+        return getStart() != null;
     }
 
 }

@@ -37,6 +37,5 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.3+'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.android.support:support-v4:22.2.1'
-    compile 'io.reactivex:rxjava:1.0.14'
 }
 

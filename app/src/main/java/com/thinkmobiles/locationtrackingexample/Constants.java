@@ -2,7 +2,14 @@ package com.thinkmobiles.locationtrackingexample;
 
 public abstract class Constants {
 
-    public static final String ROUTE_UPDATES_KEY = "ROUTE_UPDATES_KEY";
+    public static final String GEOFENCES_KEY = "GEOFENCES_KEY";
+    public static final String ROUTE_MODE_KEY = "ROUTE_MODE_KEY";
+    public static final String DISTANCE_KEY = "DISTANCE_KEY";
+    public static final String DURATION_KEY = "DURATION_KEY";
+    public static final String START_LOCATION_KEY = "START_LOCATION_KEY";
+    public static final String TARGET_LOCATION_KEY = "TARGET_LOCATION_KEY";
+
+
     public static final int REQUEST_CODE_RESOLUTION = 1;
 
     public static final int UPDATE_INTERVAL = 10000; // 10 sec

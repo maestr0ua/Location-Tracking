@@ -21,7 +21,9 @@ import com.thinkmobiles.locationtrackingexample.route.location.GeofenceTransitio
 import com.thinkmobiles.locationtrackingexample.route.location.LocationChangedListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -37,6 +39,9 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
     private LocationChangedListener mCallBack;
     private List<Geofence> mGeofencesList = new ArrayList<>();
     private PendingIntent mGeofencePendingIntent;
+    private CopyOnWriteArrayList<LatLng> mGeofencesCoordinates = new CopyOnWriteArrayList<>();
+
+
 
     public final void connect(Activity activity) {
 
@@ -81,8 +86,13 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
         startLocationUpdates();
 
         if (mGeofenceUpdatesStarted) {
-            startGeofenceMonitoring(null);
+            stopGeofenceMonitoring();
         }
+
+        for (LatLng latLng : mGeofencesCoordinates) {
+            addGeofence(latLng);
+        }
+
     }
 
     @Override
@@ -134,12 +144,16 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
         }
     }
 
-    public final void startGeofenceMonitoring(LatLng location) {
+    public void setGeofences(List<LatLng> geofences) {
+        mGeofencesCoordinates.clear();
+        mGeofencesCoordinates.addAll(geofences);
+    }
+
+    private void addGeofence(LatLng location) {
         mGeofenceUpdatesStarted = true;
         if (location != null) {
             mGeofencesList.add(new Geofence.Builder()
                     .setRequestId("geofence " + mGeofencesList.size())
-
                     .setCircularRegion(
                             location.latitude,
                             location.longitude,
@@ -154,7 +168,11 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
                 getGeofencingRequest(),
                 getGeofencePendingIntent()
         );
+    }
 
+    public final void startGeofenceMonitoring(LatLng location) {
+        mGeofencesCoordinates.add(location);
+        addGeofence(location);
     }
 
     public final void stopGeofenceMonitoring() {
@@ -184,5 +202,9 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
 
     public void deleteGeofences() {
         mGeofencesList.clear();
+    }
+
+    public ArrayList<LatLng> getGeofences() {
+        return new ArrayList<>(mGeofencesCoordinates);
     }
 }

@@ -45,4 +45,11 @@
         <item name="android:gravity">center_vertical|start</item>
     </style>
 
+    <style name="HelpStyle" parent="android:Widget">
+        <item name="android:textColor">@color/textColorSecondary</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:gravity">center_vertical|start</item>
+    </style>
+
+
 </resources>
