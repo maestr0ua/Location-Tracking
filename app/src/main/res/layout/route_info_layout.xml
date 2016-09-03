@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/route_info_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvDistance_label"
+        style="@style/RouteInfoStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:text="@string/label_distance" />
+
+    <TextView
+        android:id="@+id/tvDistance"
+        style="@style/RouteInfoStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/tvDistance_label"
+        android:gravity="end"
+        android:minWidth="150dp" />
+
+    <TextView
+        android:id="@+id/tvDuration_label"
+        style="@style/RouteInfoStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvDistance_label"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvDistance_label"
+        android:text="@string/label_duration" />
+
+    <TextView
+        android:id="@+id/tvDuration"
+        style="@style/RouteInfoStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvDistance"
+        android:layout_below="@+id/tvDistance"
+        android:gravity="end" />
+
+
+</RelativeLayout>

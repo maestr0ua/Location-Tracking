@@ -7,89 +7,91 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.PolyUtil;
+import com.thinkmobiles.locationtrackingexample.route.models.RouteInfo;
+import com.thinkmobiles.locationtrackingexample.route.restapi.RestClient;
+import com.thinkmobiles.locationtrackingexample.route.models.RouteResponse;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit.RestAdapter;
-
-/**
- * Created by klim on 16.09.15.
- */
 public class RouteLoader extends AsyncTaskLoader<RouteInfo> {
-    public static final String LOCATION_PARAMS_KEY = "location params key";
-    public static final String START_LOCATION_KEY = "start location key";
-    public static final String TARGET_LOCATION_KEY = "target location key";
-    public static final String DIRECTIONS_MODE = "directions_mode";
+
+    private static final String LOCATION_PARAMS_KEY = "LOCATION_PARAMS_KEY";
+    private static final String START_LOCATION_KEY = "START_LOCATION_KEY";
+    private static final String TARGET_LOCATION_KEY = "TARGET_LOCATION_KEY";
+    private static final String DIRECTIONS_MODE = "DIRECTIONS_MODE";
 
     private Map<String, Location> mParams;
-    private String mMode;
+    private RouteMode mMode;
 
-    public RouteLoader(Context _context, Bundle _args)
-    {
+    public static Bundle prepareBundle(Location start, Location target, RouteMode _mode) {
+        Bundle bundle = new Bundle();
+        HashMap<String, Location> map = new HashMap<String, Location>();
+
+        map.put(RouteLoader.START_LOCATION_KEY, start);
+        map.put(RouteLoader.TARGET_LOCATION_KEY, target);
+
+        bundle.putSerializable(RouteLoader.LOCATION_PARAMS_KEY, map);
+        bundle.putInt(RouteLoader.DIRECTIONS_MODE, _mode.ordinal());
+        return bundle;
+    }
+
+
+    public RouteLoader(Context _context, Bundle _args) {
         super(_context);
-        mParams = (Map<String, Location>)_args.getSerializable(LOCATION_PARAMS_KEY);
-        mMode = _args.getString(DIRECTIONS_MODE);
+        mParams = (Map<String, Location>) _args.getSerializable(LOCATION_PARAMS_KEY);
+        mMode = RouteMode.values()[_args.getInt(DIRECTIONS_MODE)];
     }
 
     @Override
     public RouteInfo loadInBackground() {
-        try
-        {
-            Location startLocation = mParams.get(START_LOCATION_KEY);
-            Location targetLocation = mParams.get(TARGET_LOCATION_KEY);
+        Location startLocation = mParams.get(START_LOCATION_KEY);
+        Location targetLocation = mParams.get(TARGET_LOCATION_KEY);
 
-            LatLng fromPosition = new LatLng(startLocation.getLatitude(), startLocation.getLongitude());
-            LatLng toPosition = new LatLng(targetLocation.getLatitude(), targetLocation.getLongitude());
-
-            if (mMode.equals("distance")) {
-                List<LatLng> list = new ArrayList<>();
-                list.add(fromPosition);
-                list.add(toPosition);
-                float dist = (int)startLocation.distanceTo(targetLocation);
-                String distance;
-                if (dist >= 1000) distance = dist/1000 + " km";
-                else distance = dist + " m";
-
-                RouteInfo routeInfo = new RouteInfo.Builder()
-                        .setDirectionPoints(list)
-                        .setDistance(distance)
-                        .build();
-                return routeInfo;
-            } else {
-                return getRoute(fromPosition, toPosition, mMode);
-            }
-
-        }
-        catch (Exception e)
-        {
-            return null;
+        switch (mMode) {
+            case DISTANCE:
+                return getDistance(startLocation, targetLocation);
+            default:
+                return getRoute(startLocation, targetLocation, mMode);
         }
     }
 
-    private RouteInfo getRoute(LatLng _origin, LatLng _dest, String _mode) throws IOException {
-        RouteInfo result = null;
+    private RouteInfo getDistance(Location start, Location target) {
+        List<LatLng> list = new ArrayList<>();
 
-        String str_origin = _origin.latitude + "," +_origin.longitude;
-        String str_dest = _dest.latitude + "," + _dest.longitude;
+        list.add(new LatLng(start.getLatitude(),start.getLongitude()));
+        list.add(new LatLng(target.getLatitude(),target.getLongitude()));
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint("https://maps.googleapis.com")
+        float dist = (int) start.distanceTo(target);
+        String distance;
+        if (dist >= 1000) distance = dist / 1000 + " km";
+        else distance = dist + " m";
+
+        return new RouteInfo.Builder()
+                .setDirectionPoints(list)
+                .setDistance(distance)
                 .build();
-        RouteApi routeService = restAdapter.create(RouteApi.class);
-        RouteResponse routeResponse = routeService.getRoute(str_origin, str_dest, "metric", _mode);
-        if (routeResponse.status.equals("OK")) {
-            List<LatLng> points = PolyUtil.decode(routeResponse.getPoints());
-            result = new RouteInfo.Builder()
-                    .setDirectionPoints(points)
-                    .setDistance(routeResponse.getDistance())
-                    .setDuration(routeResponse.getDuration())
+
+    }
+
+    private RouteInfo getRoute(Location start, Location target, RouteMode _mode) {
+
+        LatLng startLatLng = new LatLng(start.getLatitude(), start.getLongitude());
+        LatLng targetLatLng = new LatLng(target.getLatitude(), target.getLongitude());
+
+        RouteResponse response = RestClient.getInstance().getRoute(startLatLng, targetLatLng, _mode);
+
+        if (response.status.equals("OK")) {
+            return new RouteInfo.Builder()
+                    .setDirectionPoints(PolyUtil.decode(response.getPoints()))
+                    .setDuration(response.getDuration())
+                    .setDistance(response.getDistance())
                     .build();
         }
-        return result;
+
+        return null;
     }
 
 }

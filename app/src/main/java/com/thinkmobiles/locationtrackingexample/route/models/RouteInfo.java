@@ -1,16 +1,20 @@
-package com.thinkmobiles.locationtrackingexample.route;
+package com.thinkmobiles.locationtrackingexample.route.models;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-/**
- * Created by klim on 17.09.15.
- */
 public final class RouteInfo {
+
     private List<LatLng> mDirectionPoints;
     private String mDistance;
     private String mDuration;
+
+    private RouteInfo(Builder _builder) {
+        mDirectionPoints = _builder.directionPoints;
+        mDistance = _builder.distance;
+        mDuration = _builder.duration;
+    }
 
     public final List<LatLng> getDirectionPoints() {
         return mDirectionPoints;
@@ -49,12 +53,6 @@ public final class RouteInfo {
             return routeInfo;
         }
 
-    }
-
-    private RouteInfo(Builder _builder) {
-        mDirectionPoints = _builder.directionPoints;
-        mDistance = _builder.distance;
-        mDuration = _builder.duration;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.thinkmobiles.locationtrackingexample.location;
+package com.thinkmobiles.locationtrackingexample.route.location;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -6,14 +6,8 @@ import android.content.res.Resources;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.thinkmobiles.locationtrackingexample.R;
 
-/**
- * Created by klim on 22.09.15.
- */
 public final class GeofenceErrorMessages {
 
-    /**
-     * Returns the error string for a geofencing error code.
-     */
     public static final String getErrorString(Context _context, int _errorCode) {
         Resources mResources = _context.getResources();
         switch (_errorCode) {

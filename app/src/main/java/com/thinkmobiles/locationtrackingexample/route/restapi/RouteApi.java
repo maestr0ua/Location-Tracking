@@ -1,12 +1,11 @@
-package com.thinkmobiles.locationtrackingexample.route;
+package com.thinkmobiles.locationtrackingexample.route.restapi;
+
+import com.thinkmobiles.locationtrackingexample.route.models.RouteResponse;
 
 import retrofit.http.GET;
 import retrofit.http.Query;
 
-/**
- * Created by klim on 17.09.15.
- */
-public interface RouteApi {
+interface RouteApi {
 
     @GET("/maps/api/directions/json")
     RouteResponse getRoute(

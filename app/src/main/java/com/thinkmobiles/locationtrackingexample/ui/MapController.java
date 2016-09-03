@@ -1,4 +1,4 @@
-package com.thinkmobiles.locationtrackingexample;
+package com.thinkmobiles.locationtrackingexample.ui;
 
 import android.graphics.Color;
 import android.location.Location;
@@ -14,28 +14,23 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.thinkmobiles.locationtrackingexample.Constants;
+import com.thinkmobiles.locationtrackingexample.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by klim on 23.09.15.
- */
-public final class MapHelper {
+public final class MapController {
+
     private GoogleMap mMap;
-    private List<Circle> circleList = new ArrayList();
+    private List<Circle> mCircleList = new ArrayList();
     private Marker mStartMarker, mEndMarker;
     private Polyline mRoutePolyline;
 
-    public MapHelper(final GoogleMap _map) {
+    public MapController(final GoogleMap _map) {
         mMap = _map;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                marker.hideInfoWindow();
-            }
-        });
+        mMap.setOnInfoWindowClickListener(Marker::hideInfoWindow);
     }
 
     public final void drawCircle(final LatLng _position) {
@@ -43,10 +38,15 @@ public final class MapHelper {
         int strokeColor = 0xffff0000;
         int shadeColor = 0x44ff0000;
 
-        final CircleOptions circleOptions = new CircleOptions().center(_position).radius(radiusInMeters).fillColor(shadeColor).strokeColor(strokeColor).strokeWidth(8);
+        final CircleOptions circleOptions = new CircleOptions()
+                .center(_position)
+                .radius(radiusInMeters)
+                .fillColor(shadeColor)
+                .strokeColor(strokeColor)
+                .strokeWidth(8);
 
         Circle circle = mMap.addCircle(circleOptions);
-        circleList.add(circle);
+        mCircleList.add(circle);
     }
 
     private MarkerOptions prepareMarker(Location _location, boolean _isMyLocation) {
@@ -87,9 +87,14 @@ public final class MapHelper {
             mStartMarker = mMap.addMarker(prepareMarker(_location, true));
         } else {
             final LatLng latLng = new LatLng(_location.getLatitude(), _location.getLongitude());
+
             mStartMarker.setPosition(latLng);
-            mStartMarker.setTitle("Latitude: " + _location.getLatitude() + ", Longitude: " + _location.getLongitude());
-            mStartMarker.setSnippet("Altitude: " + String.format("%.2f", _location.getAltitude()) + ", Accuracy: " + _location.getAccuracy());
+
+            mStartMarker.setTitle("Latitude: " + _location.getLatitude() + ", Longitude: " +
+                    _location.getLongitude());
+
+            mStartMarker.setSnippet("Altitude: " + String.format("%.2f", _location.getAltitude()) +
+                    ", Accuracy: " + _location.getAccuracy());
         }
         moveCamera(_location);
     }
@@ -125,24 +130,22 @@ public final class MapHelper {
 
     }
 
-    public final void deleteAll() {
-        mMap.clear();
-        mStartMarker = null;
-        mEndMarker = null;
-        deleteCircles();
-        deleteRoute();
-    }
-
     public final void deleteCircles() {
-        for (Circle circle : circleList) {
+        for (Circle circle : mCircleList) {
             circle.remove();
         }
-        circleList.clear();
+        mCircleList.clear();
     }
 
     public final void deleteRoute() {
-        mRoutePolyline.remove();
-        mRoutePolyline = null;
+        if (mEndMarker != null)
+            mEndMarker.remove();
+        mEndMarker = null;
+
+        if (mRoutePolyline != null) {
+            mRoutePolyline.remove();
+            mRoutePolyline = null;
+        }
     }
 
 }

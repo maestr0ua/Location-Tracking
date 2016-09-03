@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 22
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.thinkmobiles.locationtrackingexample"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -26,9 +26,7 @@ android {
 }
 
 retrolambda {
-    jdk System.getenv("JAVA8_HOME")
-    oldJdk System.getenv("JAVA7_HOME")
-    javaVersion JavaVersion.VERSION_1_7
+    jvmArgs '-noverify'
 }
 
 dependencies {

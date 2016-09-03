@@ -1,4 +1,4 @@
-package com.thinkmobiles.locationtrackingexample.location;
+package com.thinkmobiles.locationtrackingexample.route.location;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -8,15 +8,10 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 import com.thinkmobiles.locationtrackingexample.Constants;
 
-/**
- * Created by klim on 22.09.15.
- */
 public class GeofenceTransitionsIntentService extends IntentService {
-    private final static String TAG = "Geofence Service";
 
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     */
+    private final static String TAG = "GeofenceService";
+
     public GeofenceTransitionsIntentService() {
         super("GeofenceTransitionsIntentService");
     }

@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="colorPrimary">@color/cyan_800</item>
+        <item name="colorPrimary">@color/cyan</item>
     </style>
 
     <style name="Widget.MyApp.HeaderBar.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
@@ -21,8 +21,28 @@
     </style>
 
     <style name="Dark.Overlay.LightPopup" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:background">@color/cyan_800</item>
+        <item name="android:background">@color/cyan</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="RouteInfoStyle" parent="android:Widget">
+        <item name="android:textColor">@color/gray_dark</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SpinnerStyle" parent="android:Widget">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical|start</item>
+    </style>
+
+    <style name="SpinnerDropDownStyle" parent="android:Widget">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
+        <item name="android:gravity">center_vertical|start</item>
     </style>
 
 </resources>

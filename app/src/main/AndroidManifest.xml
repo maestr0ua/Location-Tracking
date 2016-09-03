@@ -16,10 +16,10 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name=".location.GeofenceTransitionsIntentService"
+            android:name=".route.location.GeofenceTransitionsIntentService"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

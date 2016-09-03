@@ -2,12 +2,12 @@
     <string name="app_name">LocationTrackingExample</string>
 
     <!--main activity    -->
-    <string name="accuracy_label">Accuracy:</string>
-    <string name="altitude_label">Altitude:</string>
-    <string name="longitude_label">Longitude:</string>
-    <string name="latitude_label">Latitude:</string>
-    <string name="distance">Distance: </string>
-    <string name="duration">Duration: </string>
+    <string name="label_accuracy">Accuracy:</string>
+    <string name="label_altitude">Altitude:</string>
+    <string name="label_longitude">Longitude:</string>
+    <string name="label_latitude">Latitude:</string>
+    <string name="label_distance">Distance: </string>
+    <string name="label_duration">Duration: </string>
 
     <!--menu-->
     <string name="action_clear_map">Clear map</string>
@@ -17,6 +17,9 @@
     <string name="action_stop_updates">Stop updates</string>
     <string name="action_route">Make route</string>
 
+    <!--error messages-->
+    <string name="route_error">Something went wrong...</string>
+
     <!--geofense error-->
     <string name="geofence_not_available">geofence not available</string>
     <string name="geofence_too_many_geofences">geofence too many geofences</string>
@@ -24,10 +27,8 @@
     <string name="unknown_geofence_error">unknown geofence error</string>
 
     <!--route modes-->
-    <string-array name="route_mode_name">
-        <item>driving</item>
-        <item>walking</item>
-        <item>distance</item>
-    </string-array>
+    <string name="driving">Driving</string>
+    <string name="walking">Walking</string>
+    <string name="distance">Distance</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.thinkmobiles.locationtrackingexample.spinner;
+package com.thinkmobiles.locationtrackingexample.ui.spinner;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,27 +8,25 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.thinkmobiles.locationtrackingexample.Constants;
 import com.thinkmobiles.locationtrackingexample.R;
+import com.thinkmobiles.locationtrackingexample.route.RouteMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by klim on 17.09.15.
- */
 public final class SpinnerAdapter extends BaseAdapter {
 
-    private List<String> mItems = new ArrayList<>();
+    private List<RouteMode> mItems = new ArrayList<>();
     private LayoutInflater mInflater;
 
-    public SpinnerAdapter(Context _context) {
+    public SpinnerAdapter(Context context) {
         super();
-        mInflater = LayoutInflater.from(_context);
+        mInflater = LayoutInflater.from(context);
     }
 
-    public void addItems(List<String> _strings) {
-        mItems.addAll(_strings);
+    public void addItems(List<RouteMode> items) {
+        mItems.clear();
+        mItems.addAll(items);
     }
 
     @Override
@@ -54,9 +52,10 @@ public final class SpinnerAdapter extends BaseAdapter {
         }
 
         TextView textView = (TextView) view.findViewById(android.R.id.text1);
-        textView.setText(getTitle(position));
         ImageView imageView = (ImageView) view.findViewById(R.id.spinner_drop_down_item_icon);
-        imageView.setImageResource(Constants.icons[position]);
+
+        textView.setText(RouteMode.getTitle(position));
+        imageView.setImageResource(RouteMode.getIcon(position));
 
         return view;
     }
@@ -70,12 +69,10 @@ public final class SpinnerAdapter extends BaseAdapter {
         }
         TextView textView = (TextView) view.findViewById(android.R.id.text1);
         ImageView imageView = (ImageView) view.findViewById(R.id.spinner_item_icon);
-        imageView.setImageResource(Constants.icons[position]);
-        textView.setText(getTitle(position));
+
+        imageView.setImageResource(RouteMode.getIcon(position));
+        textView.setText(RouteMode.getTitle(position));
         return view;
     }
 
-    private String getTitle(int position) {
-        return position >= 0 && position < mItems.size() ? mItems.get(position) : "";
-    }
 }

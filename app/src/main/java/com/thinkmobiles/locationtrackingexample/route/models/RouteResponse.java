@@ -1,10 +1,7 @@
-package com.thinkmobiles.locationtrackingexample.route;
+package com.thinkmobiles.locationtrackingexample.route.models;
 
 import java.util.List;
 
-/**
- * Created by klim on 17.09.15.
- */
 public final class RouteResponse {
 
     public List<Route> routes;
