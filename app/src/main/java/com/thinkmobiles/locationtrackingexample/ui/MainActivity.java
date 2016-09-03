@@ -56,12 +56,12 @@ public class MainActivity extends AppCompatActivity implements
     private MapController mMapController;
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (_savedInstanceState != null) {
-            mRouteModeStarted = _savedInstanceState.getBoolean(Constants.ROUTE_UPDATES_KEY);
+        if (savedInstanceState != null) {
+            mRouteModeStarted = savedInstanceState.getBoolean(Constants.ROUTE_UPDATES_KEY);
         } else {
             mRouteTracker = new RouteTracker();
         }
@@ -163,9 +163,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
-        super.onActivityResult(_requestCode, _resultCode, _data);
-        switch (_requestCode) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
             case Constants.REQUEST_CODE_RESOLUTION:
                 mRouteTracker.retryConnecting();
                 break;
@@ -173,25 +173,25 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLocationChanged(Location _location) {
-        mMapController.drawStartMarker(_location);
+    public void onLocationChanged(Location location) {
+        mMapController.drawStartMarker(location);
         if (mRouteModeStarted) {
             getRoute();
         }
     }
 
     @Override
-    public void onMapClick(LatLng _latLng) {
+    public void onMapClick(LatLng latLng) {
         mMapController.deleteRoute();
-        mMapController.drawEndMarker(_latLng);
+        mMapController.drawEndMarker(latLng);
         mRouteModeStarted = true;
         getRoute();
     }
 
     @Override
-    public void onMapLongClick(LatLng _latLng) {
-        mRouteTracker.startGeofenceMonitoring(_latLng);
-        mMapController.drawCircle(_latLng);
+    public void onMapLongClick(LatLng latLng) {
+        mRouteTracker.startGeofenceMonitoring(latLng);
+        mMapController.drawCircle(latLng);
     }
 
     private void getRoute() {
@@ -211,8 +211,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem _item) {
-        switch (_item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.menu_clear_map:
                 mRouteModeStarted = false;
                 clearMap();
@@ -245,8 +245,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public Loader<RouteInfo> onCreateLoader(int _id, Bundle _args) {
-        return new RouteLoader(this, _args);
+    public Loader<RouteInfo> onCreateLoader(int id, Bundle args) {
+        return new RouteLoader(this, args);
     }
 
     @Override

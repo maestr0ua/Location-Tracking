@@ -71,8 +71,8 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
         }
     }
 
-    public final void setOnLocationChangedListener(LocationChangedListener _callBack) {
-        mCallBack = _callBack;
+    public final void setOnLocationChangedListener(LocationChangedListener callBack) {
+        mCallBack = callBack;
     }
 
     @Override
@@ -128,21 +128,21 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
     }
 
     @Override
-    public final void onLocationChanged(Location _location) {
+    public final void onLocationChanged(Location location) {
         if (mCallBack != null) {
-            mCallBack.onLocationChanged(_location);
+            mCallBack.onLocationChanged(location);
         }
     }
 
-    public final void startGeofenceMonitoring(LatLng _location) {
+    public final void startGeofenceMonitoring(LatLng location) {
         mGeofenceUpdatesStarted = true;
-        if (_location != null) {
+        if (location != null) {
             mGeofencesList.add(new Geofence.Builder()
                     .setRequestId("geofence " + mGeofencesList.size())
 
                     .setCircularRegion(
-                            _location.latitude,
-                            _location.longitude,
+                            location.latitude,
+                            location.longitude,
                             Constants.GEOFENCE_RADIUS_IN_METERS)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)

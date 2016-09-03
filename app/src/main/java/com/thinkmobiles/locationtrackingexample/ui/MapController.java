@@ -49,54 +49,54 @@ public final class MapController {
         mCircleList.add(circle);
     }
 
-    private MarkerOptions prepareMarker(Location _location, boolean _isMyLocation) {
-        final LatLng myLocation = new LatLng(_location.getLatitude(), _location.getLongitude());
+    private MarkerOptions prepareMarker(Location location, boolean isMyLocation) {
+        final LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         MarkerOptions marker = new MarkerOptions().position(myLocation);
-        marker.title("Latitude: " + _location.getLatitude() + ", Longitude: " + _location.getLongitude());
-        marker.snippet("Altitude: " + String.format("%.2f", _location.getAltitude()) + ", Accuracy: " + _location.getAccuracy());
+        marker.title("Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude());
+        marker.snippet("Altitude: " + String.format("%.2f", location.getAltitude()) + ", Accuracy: " + location.getAccuracy());
 
-        if (_isMyLocation)
+        if (isMyLocation)
             marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
         return marker;
     }
 
-    private void moveCamera(Location _location) {
+    private void moveCamera(Location location) {
         float currentZoomLevel = Constants.DEFAULT_ZOOM;
         if (mMap.getCameraPosition().zoom > Constants.DEFAULT_ZOOM) {
             currentZoomLevel = mMap.getCameraPosition().zoom;
         }
-        final LatLng latLng = new LatLng(_location.getLatitude(), _location.getLongitude());
+        final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, currentZoomLevel);
         mMap.animateCamera(cameraUpdate);
     }
 
-    public final void drawEndMarker(LatLng _latLng) {
+    public final void drawEndMarker(LatLng latLng) {
         if (mEndMarker == null) {
             Location location = new Location("TargetLocation");
-            location.setLatitude(_latLng.latitude);
-            location.setLongitude(_latLng.longitude);
+            location.setLatitude(latLng.latitude);
+            location.setLongitude(latLng.longitude);
             mEndMarker = mMap.addMarker(prepareMarker(location, false));
         } else {
-            mEndMarker.setPosition(_latLng);
+            mEndMarker.setPosition(latLng);
         }
     }
 
-    public final void drawStartMarker(Location _location) {
+    public final void drawStartMarker(Location location) {
         if (mStartMarker == null) {
-            mStartMarker = mMap.addMarker(prepareMarker(_location, true));
+            mStartMarker = mMap.addMarker(prepareMarker(location, true));
         } else {
-            final LatLng latLng = new LatLng(_location.getLatitude(), _location.getLongitude());
+            final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
             mStartMarker.setPosition(latLng);
 
-            mStartMarker.setTitle("Latitude: " + _location.getLatitude() + ", Longitude: " +
-                    _location.getLongitude());
+            mStartMarker.setTitle("Latitude: " + location.getLatitude() + ", Longitude: " +
+                    location.getLongitude());
 
-            mStartMarker.setSnippet("Altitude: " + String.format("%.2f", _location.getAltitude()) +
-                    ", Accuracy: " + _location.getAccuracy());
+            mStartMarker.setSnippet("Altitude: " + String.format("%.2f", location.getAltitude()) +
+                    ", Accuracy: " + location.getAccuracy());
         }
-        moveCamera(_location);
+        moveCamera(location);
     }
 
     public final Location getStartPosition() {

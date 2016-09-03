@@ -10,10 +10,10 @@ public final class RouteInfo {
     private String mDistance;
     private String mDuration;
 
-    private RouteInfo(Builder _builder) {
-        mDirectionPoints = _builder.directionPoints;
-        mDistance = _builder.distance;
-        mDuration = _builder.duration;
+    private RouteInfo(Builder builder) {
+        mDirectionPoints = builder.points;
+        mDistance = builder.distance;
+        mDuration = builder.duration;
     }
 
     public final List<LatLng> getDirectionPoints() {
@@ -29,22 +29,22 @@ public final class RouteInfo {
     }
 
     public static class Builder {
-        List<LatLng> directionPoints;
+        List<LatLng> points;
         String distance;
         String duration;
 
-        public Builder setDirectionPoints(List<LatLng> _directionPoints) {
-            directionPoints = _directionPoints;
+        public Builder setPoints(List<LatLng> points) {
+            this.points = points;
             return this;
         }
 
-        public Builder setDuration(String _duration) {
-            duration = _duration;
+        public Builder setDuration(String duration) {
+            this.duration = duration;
             return this;
         }
 
-        public Builder setDistance(String _distance) {
-            distance = _distance;
+        public Builder setDistance(String distance) {
+            this.distance = distance;
             return this;
         }
 

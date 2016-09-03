@@ -39,10 +39,10 @@ public class RouteLoader extends AsyncTaskLoader<RouteInfo> {
     }
 
 
-    public RouteLoader(Context _context, Bundle _args) {
-        super(_context);
-        mParams = (Map<String, Location>) _args.getSerializable(LOCATION_PARAMS_KEY);
-        mMode = RouteMode.values()[_args.getInt(DIRECTIONS_MODE)];
+    public RouteLoader(Context context, Bundle args) {
+        super(context);
+        mParams = (Map<String, Location>) args.getSerializable(LOCATION_PARAMS_KEY);
+        mMode = RouteMode.values()[args.getInt(DIRECTIONS_MODE)];
     }
 
     @Override
@@ -70,22 +70,22 @@ public class RouteLoader extends AsyncTaskLoader<RouteInfo> {
         else distance = dist + " m";
 
         return new RouteInfo.Builder()
-                .setDirectionPoints(list)
+                .setPoints(list)
                 .setDistance(distance)
                 .build();
 
     }
 
-    private RouteInfo getRoute(Location start, Location target, RouteMode _mode) {
+    private RouteInfo getRoute(Location start, Location target, RouteMode mode) {
 
         LatLng startLatLng = new LatLng(start.getLatitude(), start.getLongitude());
         LatLng targetLatLng = new LatLng(target.getLatitude(), target.getLongitude());
 
-        RouteResponse response = RestClient.getInstance().getRoute(startLatLng, targetLatLng, _mode);
+        RouteResponse response = RestClient.getInstance().getRoute(startLatLng, targetLatLng, mode);
 
         if (response.status.equals("OK")) {
             return new RouteInfo.Builder()
-                    .setDirectionPoints(PolyUtil.decode(response.getPoints()))
+                    .setPoints(PolyUtil.decode(response.getPoints()))
                     .setDuration(response.getDuration())
                     .setDistance(response.getDistance())
                     .build();

@@ -34,11 +34,11 @@ public class RestClient {
         mRouteApi = mAdapter.create(RouteApi.class);
     }
 
-    public RouteResponse getRoute(LatLng _origin, LatLng _dest, RouteMode _mode) {
-        String str_origin = _origin.latitude + "," + _origin.longitude;
-        String str_dest = _dest.latitude + "," + _dest.longitude;
+    public RouteResponse getRoute(LatLng origin, LatLng dest, RouteMode mode) {
+        String str_origin = origin.latitude + "," + origin.longitude;
+        String str_dest = dest.latitude + "," + dest.longitude;
 
-        return mRouteApi.getRoute(str_origin, str_dest, "metric", _mode.getId());
+        return mRouteApi.getRoute(str_origin, str_dest, "metric", mode.getId());
     }
 
 }

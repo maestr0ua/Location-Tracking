@@ -8,9 +8,9 @@ import com.thinkmobiles.locationtrackingexample.R;
 
 public final class GeofenceErrorMessages {
 
-    public static final String getErrorString(Context _context, int _errorCode) {
-        Resources mResources = _context.getResources();
-        switch (_errorCode) {
+    public static final String getErrorString(Context context, int errorCode) {
+        Resources mResources = context.getResources();
+        switch (errorCode) {
             case GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE:
                 return mResources.getString(R.string.geofence_not_available);
             case GeofenceStatusCodes.GEOFENCE_TOO_MANY_GEOFENCES:
