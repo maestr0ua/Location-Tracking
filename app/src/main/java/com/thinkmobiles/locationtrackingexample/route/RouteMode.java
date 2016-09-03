@@ -39,11 +39,11 @@ public enum RouteMode {
 
         switch (values()[mode]) {
             case DISTANCE:
-                return R.drawable.distance;
+                return R.drawable.ic_distance;
             case WALKING:
-                return R.drawable.walker;
+                return R.drawable.ic_walker;
             case DRIVING:
-                return R.drawable.car;
+                return R.drawable.ic_car;
             default:
                 return 0;
         }

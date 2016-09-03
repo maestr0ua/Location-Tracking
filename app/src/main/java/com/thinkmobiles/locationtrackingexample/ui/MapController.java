@@ -57,7 +57,7 @@ public final class MapController {
         marker.snippet("Altitude: " + String.format("%.2f", _location.getAltitude()) + ", Accuracy: " + _location.getAccuracy());
 
         if (_isMyLocation)
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
         return marker;
     }
 
