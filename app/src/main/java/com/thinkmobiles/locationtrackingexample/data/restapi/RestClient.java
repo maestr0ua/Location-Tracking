@@ -1,8 +1,8 @@
-package com.thinkmobiles.locationtrackingexample.route.restapi;
+package com.thinkmobiles.locationtrackingexample.data.restapi;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.thinkmobiles.locationtrackingexample.route.RouteMode;
-import com.thinkmobiles.locationtrackingexample.route.models.RouteResponse;
+import com.thinkmobiles.locationtrackingexample.data.RouteMode;
+import com.thinkmobiles.locationtrackingexample.data.models.RouteResponse;
 
 import retrofit.RestAdapter;
 

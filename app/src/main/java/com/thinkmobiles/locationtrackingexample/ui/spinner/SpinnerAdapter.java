@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thinkmobiles.locationtrackingexample.R;
-import com.thinkmobiles.locationtrackingexample.route.RouteMode;
+import com.thinkmobiles.locationtrackingexample.data.RouteMode;
 
 import java.util.ArrayList;
 import java.util.List;

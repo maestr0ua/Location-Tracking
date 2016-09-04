@@ -1,4 +1,4 @@
-package com.thinkmobiles.locationtrackingexample.route;
+package com.thinkmobiles.locationtrackingexample.data;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;

@@ -1,4 +1,4 @@
-package com.thinkmobiles.locationtrackingexample.route.location;
+package com.thinkmobiles.locationtrackingexample.data.location;
 
 import android.location.Location;
 

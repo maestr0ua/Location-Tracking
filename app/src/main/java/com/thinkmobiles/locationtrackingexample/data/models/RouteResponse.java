@@ -1,4 +1,4 @@
-package com.thinkmobiles.locationtrackingexample.route.models;
+package com.thinkmobiles.locationtrackingexample.data.models;
 
 import java.util.List;
 

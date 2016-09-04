@@ -1,4 +1,4 @@
-package com.thinkmobiles.locationtrackingexample.route;
+package com.thinkmobiles.locationtrackingexample.data;
 
 import android.content.Context;
 import android.location.Location;
@@ -8,9 +8,9 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.PolyUtil;
-import com.thinkmobiles.locationtrackingexample.route.models.RouteInfo;
-import com.thinkmobiles.locationtrackingexample.route.models.RouteResponse;
-import com.thinkmobiles.locationtrackingexample.route.restapi.RestClient;
+import com.thinkmobiles.locationtrackingexample.data.models.RouteInfo;
+import com.thinkmobiles.locationtrackingexample.data.models.RouteResponse;
+import com.thinkmobiles.locationtrackingexample.data.restapi.RestClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;

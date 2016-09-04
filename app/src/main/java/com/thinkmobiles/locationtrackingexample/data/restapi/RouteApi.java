@@ -1,6 +1,6 @@
-package com.thinkmobiles.locationtrackingexample.route.restapi;
+package com.thinkmobiles.locationtrackingexample.data.restapi;
 
-import com.thinkmobiles.locationtrackingexample.route.models.RouteResponse;
+import com.thinkmobiles.locationtrackingexample.data.models.RouteResponse;
 
 import retrofit.http.GET;
 import retrofit.http.Query;

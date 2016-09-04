@@ -1,4 +1,4 @@
-package com.thinkmobiles.locationtrackingexample.route;
+package com.thinkmobiles.locationtrackingexample.data;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -17,11 +17,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.thinkmobiles.locationtrackingexample.Constants;
-import com.thinkmobiles.locationtrackingexample.route.location.GeofenceTransitionsIntentService;
-import com.thinkmobiles.locationtrackingexample.route.location.LocationChangedListener;
+import com.thinkmobiles.locationtrackingexample.data.location.GeofenceTransitionsIntentService;
+import com.thinkmobiles.locationtrackingexample.data.location.LocationChangedListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

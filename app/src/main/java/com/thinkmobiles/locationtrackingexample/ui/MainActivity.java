@@ -29,11 +29,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.thinkmobiles.locationtrackingexample.Constants;
 import com.thinkmobiles.locationtrackingexample.R;
-import com.thinkmobiles.locationtrackingexample.route.location.LocationChangedListener;
-import com.thinkmobiles.locationtrackingexample.route.RouteTracker;
-import com.thinkmobiles.locationtrackingexample.route.models.RouteInfo;
-import com.thinkmobiles.locationtrackingexample.route.RouteLoader;
-import com.thinkmobiles.locationtrackingexample.route.RouteMode;
+import com.thinkmobiles.locationtrackingexample.data.location.LocationChangedListener;
+import com.thinkmobiles.locationtrackingexample.data.RouteTracker;
+import com.thinkmobiles.locationtrackingexample.data.models.RouteInfo;
+import com.thinkmobiles.locationtrackingexample.data.RouteLoader;
+import com.thinkmobiles.locationtrackingexample.data.RouteMode;
 import com.thinkmobiles.locationtrackingexample.ui.spinner.SpinnerAdapter;
 
 import java.util.ArrayList;

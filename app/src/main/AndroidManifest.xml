@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name=".route.location.GeofenceTransitionsIntentService"
+            android:name=".data.location.GeofenceTransitionsIntentService"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
