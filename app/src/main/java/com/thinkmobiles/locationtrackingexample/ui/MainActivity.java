@@ -65,22 +65,7 @@ public class MainActivity extends AppCompatActivity implements
         mRouteTracker.setOnLocationChangedListener(this);
 
         findUI();
-        setupUI(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            updateRoute(false);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(Constants.ROUTE_MODE_KEY, mCurrentMode.ordinal());
-        outState.putParcelable(Constants.START_LOCATION_KEY, mMapController.getStart());
-        outState.putParcelable(Constants.TARGET_LOCATION_KEY, mMapController.getTarget());
-        outState.putString(Constants.DISTANCE_KEY, tvDistance.getText().toString());
-        outState.putString(Constants.DURATION_KEY, tvDuration.getText().toString());
-        outState.putParcelableArrayList(Constants.GEOFENCES_KEY, mRouteTracker.getGeofences());
-        super.onSaveInstanceState(outState);
+        setupUI();
     }
 
     private void findUI() {
@@ -90,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements
         tvDuration = (TextView) findViewById(R.id.tvDuration);
     }
 
-    private void setupUI(Bundle savedState) {
+    private void setupUI() {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -98,31 +83,6 @@ public class MainActivity extends AppCompatActivity implements
         vgRouteInfo.setVisibility(View.GONE);
         setupMap();
         setupModeSpinner();
-
-        if (savedState != null) {
-            mCurrentMode = RouteMode.values()[savedState.getInt(Constants.ROUTE_MODE_KEY)];
-            tvDistance.setText(savedState.getString(Constants.DISTANCE_KEY));
-            tvDuration.setText(savedState.getString(Constants.DURATION_KEY));
-
-            Location start = savedState.getParcelable(Constants.START_LOCATION_KEY);
-            if (start != null) {
-                mMapController.drawStartMarker(start);
-            }
-
-            Location target = savedState.getParcelable(Constants.TARGET_LOCATION_KEY);
-            if (target != null) {
-                mMapController.drawTargetMarker(new LatLng(target.getLatitude(), target.getLongitude()));
-            }
-
-            List<LatLng> geofences = savedState.getParcelableArrayList(Constants.GEOFENCES_KEY);
-            mRouteTracker.setGeofences(geofences);
-            for (LatLng latLng : geofences) {
-                mMapController.drawCircle(latLng);
-            }
-
-        }
-
-        vgRouteInfo.setVisibility(mMapController.hasTarget() ? View.VISIBLE : View.GONE);
     }
 
     private void setupModeSpinner() {
@@ -169,6 +129,70 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(Constants.ROUTE_MODE_KEY, mCurrentMode.ordinal());
+        outState.putParcelable(Constants.START_LOCATION_KEY, mMapController.getStart());
+        outState.putParcelable(Constants.TARGET_LOCATION_KEY, mMapController.getTarget());
+        outState.putString(Constants.DISTANCE_KEY, tvDistance.getText().toString());
+        outState.putString(Constants.DURATION_KEY, tvDuration.getText().toString());
+        outState.putParcelableArrayList(Constants.GEOFENCES_KEY, mRouteTracker.getGeofences());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mCurrentMode = RouteMode.values()[savedInstanceState.getInt(Constants.ROUTE_MODE_KEY)];
+            tvDistance.setText(savedInstanceState.getString(Constants.DISTANCE_KEY));
+            tvDuration.setText(savedInstanceState.getString(Constants.DURATION_KEY));
+
+            Location start = savedInstanceState.getParcelable(Constants.START_LOCATION_KEY);
+            if (start != null) {
+                mMapController.setStart(start);
+            }
+
+            Location target = savedInstanceState.getParcelable(Constants.TARGET_LOCATION_KEY);
+            if (target != null) {
+                mMapController.setTarget(new LatLng(target.getLatitude(), target.getLongitude()));
+            }
+
+            List<LatLng> geofences = savedInstanceState.getParcelableArrayList(Constants.GEOFENCES_KEY);
+            mRouteTracker.setGeofences(geofences);
+            for (LatLng latLng : geofences) {
+                mMapController.drawCircle(latLng);
+            }
+
+        }
+
+        vgRouteInfo.setVisibility(mMapController.hasTarget() ? View.VISIBLE : View.GONE);
+        updateRoute(false);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_clear_map:
+                clearMap();
+                return true;
+            case R.id.menu_clear_geofences:
+                clearGeofences();
+                return true;
+            case R.id.menu_clear_route:
+                clearRoute();
+                return true;
+        }
+        return false;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         mRouteTracker.connect(this);
@@ -200,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        mMapController.drawStartMarker(location);
+        mMapController.setStart(location);
         if (mMapController.hasStart() & mMapController.hasTarget()) {
             updateRoute(true);
         }
@@ -209,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onMapClick(LatLng latLng) {
         mMapController.deleteRoute();
-        mMapController.drawTargetMarker(latLng);
+        mMapController.setTarget(latLng);
         updateRoute(true);
     }
 
@@ -217,44 +241,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onMapLongClick(LatLng latLng) {
         mRouteTracker.startGeofenceMonitoring(latLng);
         mMapController.drawCircle(latLng);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_clear_map:
-                clearMap();
-                return true;
-            case R.id.menu_clear_geofences:
-                clearGeofences();
-                return true;
-            case R.id.menu_clear_route:
-                clearRoute();
-                return true;
-        }
-        return false;
-    }
-
-    private void clearMap() {
-        clearRoute();
-        clearGeofences();
-    }
-
-    private void clearGeofences() {
-        mMapController.deleteCircles();
-        mRouteTracker.stopGeofenceMonitoring();
-        mRouteTracker.deleteGeofences();
-    }
-
-    private void clearRoute() {
-        mMapController.deleteRoute();
-        vgRouteInfo.setVisibility(View.GONE);
     }
 
     @Override
@@ -279,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements
     private void updateRoute(boolean restart) {
         if (mMapController.hasStart() & mMapController.hasTarget()) {
 
-            Bundle args =  RouteLoader.prepareBundle(mMapController.getStart(),
+            Bundle args = RouteLoader.prepareBundle(mMapController.getStart(),
                     mMapController.getTarget(),
                     RouteMode.values()[mRouteSpinner.getSelectedItemPosition()]);
 
@@ -307,6 +293,21 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             tvDuration.setText("");
         }
+    }
+
+    private void clearMap() {
+        clearRoute();
+        clearGeofences();
+    }
+
+    private void clearGeofences() {
+        mMapController.deleteCircles();
+        mRouteTracker.stopGeofenceMonitoring();
+    }
+
+    private void clearRoute() {
+        mMapController.deleteRoute();
+        vgRouteInfo.setVisibility(View.GONE);
     }
 
     private class GeofenceReceiver extends BroadcastReceiver {

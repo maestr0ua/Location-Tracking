@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-public final class RouteInfo {
+public class RouteInfo {
 
     private List<LatLng> mDirectionPoints;
     private String mDistance;
@@ -16,15 +16,15 @@ public final class RouteInfo {
         mDuration = builder.duration;
     }
 
-    public final List<LatLng> getDirectionPoints() {
+    public List<LatLng> getDirectionPoints() {
         return mDirectionPoints;
     }
 
-    public final String getDistance() {
+    public String getDistance() {
         return mDistance;
     }
 
-    public final String getDuration() {
+    public String getDuration() {
         return mDuration;
     }
 

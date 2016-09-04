@@ -71,7 +71,7 @@ public final class MapController {
         mMap.animateCamera(cameraUpdate);
     }
 
-    public final void drawTargetMarker(LatLng latLng) {
+    public final void setTarget(LatLng latLng) {
         if (mTargetMarker == null) {
             Location location = new Location("TargetLocation");
             location.setLatitude(latLng.latitude);
@@ -83,7 +83,7 @@ public final class MapController {
 
     }
 
-    public final void drawStartMarker(Location location) {
+    public final void setStart(Location location) {
         if (mStartMarker == null) {
             mStartMarker = mMap.addMarker(prepareMarker(location, true));
         } else {

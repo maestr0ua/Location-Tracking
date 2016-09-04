@@ -14,7 +14,7 @@ import com.thinkmobiles.locationtrackingexample.data.RouteMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class SpinnerAdapter extends BaseAdapter {
+public class SpinnerAdapter extends BaseAdapter {
 
     private List<RouteMode> mItems = new ArrayList<>();
     private LayoutInflater mInflater;

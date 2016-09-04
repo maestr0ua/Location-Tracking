@@ -2,6 +2,9 @@ package com.thinkmobiles.locationtrackingexample;
 
 public abstract class Constants {
 
+    public static final String GOOGLE_API_ENDPOINT = "https://maps.googleapis.com";
+    public static final String SYSTEM_OF_MEASUREMENT = "metric";
+
     public static final String GEOFENCES_KEY = "GEOFENCES_KEY";
     public static final String ROUTE_MODE_KEY = "ROUTE_MODE_KEY";
     public static final String DISTANCE_KEY = "DISTANCE_KEY";

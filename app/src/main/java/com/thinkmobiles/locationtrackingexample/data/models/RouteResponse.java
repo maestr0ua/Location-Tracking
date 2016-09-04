@@ -2,20 +2,20 @@ package com.thinkmobiles.locationtrackingexample.data.models;
 
 import java.util.List;
 
-public final class RouteResponse {
+public class RouteResponse {
 
     public List<Route> routes;
     public String status;
 
-    public final String getPoints() {
+    public String getPoints() {
         return this.routes.get(0).overview_polyline.points;
     }
 
-    public final String getDistance() {
+    public String getDistance() {
         return routes.get(0).legs.get(0).distance.text;
     }
 
-    public final String getDuration() {
+    public String getDuration() {
         return routes.get(0).legs.get(0).duration.text;
     }
 

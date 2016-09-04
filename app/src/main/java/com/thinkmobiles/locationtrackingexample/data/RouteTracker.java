@@ -24,63 +24,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
+public class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private GoogleApiClient mGoogleApiClient;
     private Activity mActivity;
 
+
+    private boolean mIsInResolution;
+    private PendingIntent mGeofencePendingIntent;
+
+    private LocationRequest mLocationRequest;
+    private LocationChangedListener mCallBack;
+
+    private List<Geofence> mGeofencesList = new ArrayList<>();
+
+    private CopyOnWriteArrayList<LatLng> mGeofencesCoordinates = new CopyOnWriteArrayList<>();
+
     private boolean mLocationUpdatesStarted = false;
     private boolean mGeofenceUpdatesStarted = false;
 
-    private boolean mIsInResolution;
-    private LocationRequest mLocationRequest;
-    private LocationChangedListener mCallBack;
-    private List<Geofence> mGeofencesList = new ArrayList<>();
-    private PendingIntent mGeofencePendingIntent;
-    private CopyOnWriteArrayList<LatLng> mGeofencesCoordinates = new CopyOnWriteArrayList<>();
-
-
-
-    public final void connect(Activity activity) {
-
-        this.mActivity = activity;
-
-        mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        if (mGoogleApiClient != null)
-            mGoogleApiClient.connect();
-    }
-
-    public final void disconnect() {
-        if (mGoogleApiClient != null) {
-            if (mLocationUpdatesStarted) {
-                stopLocationUpdates();
-            }
-            if (mGeofenceUpdatesStarted) {
-                stopGeofenceMonitoring();
-            }
-            mGoogleApiClient.disconnect();
-        }
-    }
-
-    public final void retryConnecting() {
-        mIsInResolution = false;
-        if (!mGoogleApiClient.isConnecting()) {
-            mGoogleApiClient.connect();
-        }
-    }
-
-    public final void setOnLocationChangedListener(LocationChangedListener callBack) {
-        mCallBack = callBack;
-    }
-
     @Override
-    public final void onConnected(Bundle bundle) {
+    public void onConnected(Bundle bundle) {
         createLocationRequest();
         startLocationUpdates();
 
@@ -95,12 +60,12 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
     }
 
     @Override
-    public final void onConnectionSuspended(int i) {
+    public void onConnectionSuspended(int i) {
         retryConnecting();
     }
 
     @Override
-    public final void onConnectionFailed(ConnectionResult _result) {
+    public void onConnectionFailed(ConnectionResult _result) {
         if (!_result.hasResolution()) {
             GooglePlayServicesUtil.getErrorDialog(
                     _result.getErrorCode(), mActivity, 0, dialog -> retryConnecting()).show();
@@ -116,6 +81,49 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
             retryConnecting();
         }
 
+    }
+
+    @Override
+    public final void onLocationChanged(Location location) {
+        if (mCallBack != null) {
+            mCallBack.onLocationChanged(location);
+        }
+    }
+
+    public void setOnLocationChangedListener(LocationChangedListener callBack) {
+        mCallBack = callBack;
+    }
+
+    public final void connect(Activity activity) {
+        this.mActivity = activity;
+
+        mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.connect();
+    }
+
+    public void disconnect() {
+        if (mGoogleApiClient != null) {
+            if (mLocationUpdatesStarted) {
+                stopLocationUpdates();
+            }
+            if (mGeofenceUpdatesStarted) {
+                stopGeofenceMonitoring();
+            }
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    public void retryConnecting() {
+        mIsInResolution = false;
+        if (!mGoogleApiClient.isConnecting()) {
+            mGoogleApiClient.connect();
+        }
     }
 
     private void createLocationRequest() {
@@ -134,13 +142,6 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
     public final void stopLocationUpdates() {
         mLocationUpdatesStarted = false;
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-    }
-
-    @Override
-    public final void onLocationChanged(Location location) {
-        if (mCallBack != null) {
-            mCallBack.onLocationChanged(location);
-        }
     }
 
     public void setGeofences(List<LatLng> geofences) {
@@ -169,13 +170,14 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
         );
     }
 
-    public final void startGeofenceMonitoring(LatLng location) {
+    public void startGeofenceMonitoring(LatLng location) {
         mGeofencesCoordinates.add(location);
         addGeofence(location);
     }
 
-    public final void stopGeofenceMonitoring() {
+    public void stopGeofenceMonitoring() {
         mGeofenceUpdatesStarted = false;
+        mGeofencesCoordinates.clear();
         LocationServices.GeofencingApi.removeGeofences(
                 mGoogleApiClient,
                 getGeofencePendingIntent()
@@ -197,10 +199,6 @@ public final class RouteTracker implements GoogleApiClient.ConnectionCallbacks,
         }
         return mGeofencePendingIntent;
 
-    }
-
-    public void deleteGeofences() {
-        mGeofencesList.clear();
     }
 
     public ArrayList<LatLng> getGeofences() {
